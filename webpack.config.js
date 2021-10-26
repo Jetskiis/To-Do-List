@@ -14,7 +14,7 @@ module.exports = {
     assetModuleFilename: "[name][ext]",
   },
   watchOptions: {
-    aggregateTimeout: 300,
+    aggregateTimeout: 600,
     poll: true,
   },
   devtool: "inline-source-map",
@@ -41,6 +41,10 @@ module.exports = {
             presets: ["@babel/preset-env"],
           },
         },
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
       },
     ],
   },

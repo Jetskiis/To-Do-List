@@ -1,6 +1,17 @@
-class toDoList {
-  constructor() {
+//toDoList has an array of toDoItem
+class toDoList { 
+  
+  constructor(name) {
+    this.name=name;
     this.items = [];
+  }
+
+  set name(value) {
+    if (value.length > 20) {
+      alert("Name is too long");
+      return;
+    }
+    this._name = value;
   }
 
   newItem(item) {
@@ -24,8 +35,13 @@ class toDoList {
   getItems() {
     return this.items;
   }
+
+  getName() {
+    return this.name;
+  }
 }
 
+//toDoItem is a class
 class toDoItem {
   constructor(name, description, dueDate, priority) {
     this.name = name;
