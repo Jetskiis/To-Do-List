@@ -1,4 +1,4 @@
-import {toDoList , toDoItem} from './TodoList.js';
+import {toDoList , toDoItem} from './toDoList.js';
 
 //Project class has an array (projectsList) with objects (key: name of to do list) (value: toDoList class)
 class Project {

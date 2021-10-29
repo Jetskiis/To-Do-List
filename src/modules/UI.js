@@ -1,5 +1,6 @@
-
-import Project from "./ProjectManager.js";
+import Project from "./projectManager.js";
+import {inboxHandler, todayHandler} from "./logic.js";
+import { renderToDoList } from "./render.js";
 
 const mainContainer = document.querySelector(".main-container");
 
@@ -20,9 +21,13 @@ export function addEventListeners() {
     upcoming.addEventListener()
     projectsSlider.addEventListener() */
   addProjectButton.addEventListener("click", newProjectPrompt);
-  /*     addTaskButton.addEventListener() */
+  addTaskButton.addEventListener("click", addTask);
 }
 
+//add new task to current to do list selection
+function addTask() {}
+
+//prompts the user to add a new project
 function newProjectPrompt() {
   let div = document.createElement("div");
 
@@ -45,6 +50,7 @@ function newProjectPrompt() {
   let inputField = newProjectCard.querySelector("input[type=text]");
   let submitBoxes = newProjectCard.querySelectorAll("input[type=submit]");
 
+  //checks user input
   submitBoxes.forEach((input) =>
     input.addEventListener("click", (e) => {
       e.preventDefault();
@@ -52,7 +58,7 @@ function newProjectPrompt() {
         let inputValue = document.querySelector("input[type=text]").value;
         let currentId = projectsDatabase.projectsList.length;
         projectsDatabase.addProject(inputValue);
-        insertProjectDiv(inputValue,currentId);
+        insertProjectDiv(inputValue, currentId);
         div.remove("new-project-card");
       } else if (inputField.value == "" && input.value != "Cancel") {
         alert("Name must be at least 1 character");
@@ -63,32 +69,41 @@ function newProjectPrompt() {
   );
 }
 
-
-function insertProjectDiv(name,id) {
-    let div = document.createElement("button");
-    div.innerHTML=`
-    <li>
-    ${name}
-    </li>
+//adds the new project to sidebar
+function insertProjectDiv(name, id) {
+  let li = document.createElement("li");
+  let button = document.createElement("button");
+  li.appendChild(button);
+  button.innerHTML = `
+    &#9642 ${name}
     `;
-    div.classList.add("projects-children");
-    div.setAttribute('id',`${id}`);
-    div.addEventListener("click",displayProjectDiv);
-    projectsDiv.querySelector("ul").appendChild(div);
+  button.classList.add("projects-children");
+  button.setAttribute("id", `${id}`);
+  button.addEventListener("click", displayProjectDiv);
+  projectsDiv.querySelector("ul").appendChild(li);
 }
 
+//calls function to display PROJECTS
 function displayProjectDiv(id) {
-  let idValue = id.target.getAttribute('id');
-  let project = (projectsDatabase.projectsList[idValue]);
-  
+  let idValue = id.target.getAttribute("id");
+  renderToDoList(idValue, "Project");
   //console.log(project);
 }
 
-function renderToDoList() {
-
-}
 
 
 
+/* function renderToDoList(type,id) {
+  if (type == "Project"){
+  render()
+  }
+  else if (type == "Today"){
 
+  }
+  else if (type =="Inbox"){
 
+  }
+  else if (type == "Upcoming") {
+    
+  }
+} */
