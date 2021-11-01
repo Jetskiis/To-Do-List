@@ -13,7 +13,6 @@ aside {
   height: inherit;
 }
 
-
 /* Top Banner */
 .banner {
   display: flex;
@@ -47,11 +46,15 @@ aside {
   font-size: 1.1em;
 }
 #tab-container button {
-  border: none;
   background: none;
+  border: none;
   text-align: left;
 }
-#inbox:hover, #today:hover, #upcoming:hover, #projects-slider:hover, #add-project:hover {
+#inbox:hover,
+#today:hover,
+#upcoming:hover,
+#projects-slider:hover,
+#add-project:hover {
   background-color: rgb(209, 201, 201);
 }
 #tab-container i {
@@ -78,10 +81,12 @@ aside {
   padding: 0;
   margin: 0;
 }
-#projects-body{
+#projects-body {
   margin-top: 0.25em;
 }
-
+.selected {
+  background-color: rgb(209, 201, 201) !important;
+}
 
 /* Main interface with to-dos */
 .main {
@@ -96,22 +101,22 @@ aside {
   border-bottom: 1px solid darkgray;
 }
 #add-task {
-    margin-top: 0.5em;
-    width: 100%;
-    border: none;
-    padding: 1em 0;
+  margin-top: 0.5em;
+  width: 100%;
+  border: none;
+  padding: 1em 0;
 
-    text-align: left;
-    background-color: white;
-    line-height: 2em;
-    font-weight: 500;
-    font-size: 1em;
+  text-align: left;
+  background-color: white;
+  line-height: 2em;
+  font-weight: 500;
+  font-size: 1em;
 }
 #add-task i {
-    margin-right: 1.2em;
+  margin-right: 1.2em;
 }
 #add-task:hover {
-    background-color: rgb(239, 239, 239);
+  background-color: rgb(239, 239, 239);
 }
 
 /*Add new project card */
@@ -121,7 +126,6 @@ aside {
   left: 40%;
   width: 25em;
   border: 1px black solid;
-  
 }
 .new-project-card h3 {
   text-align: center;
@@ -141,7 +145,7 @@ aside {
   padding: 0.4em;
   width: 100%;
 }
-.new-project-card input[type=submit] {
+.new-project-card input[type="submit"] {
   padding: 0.6rem;
   margin-top: 1.25rem;
   margin-right: 0.5rem;
@@ -150,8 +154,53 @@ aside {
   background-color: rgb(250, 84, 84);
   font-size: 1.1rem;
 }
+/*Add task prompt*/
+.new-task {
+  width: 70%;
+  margin: auto;
+  margin-top: 1.5em;
+  border: 1px solid black;
+}
+.new-task form {
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  gap: 1em;
+  text-align: center;
+}
+.new-task form span {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+#add-task-name {
+  margin: auto;
+  width: 30%;
+}
+#add-task-desc {
+  text-align: top;
+  padding: 1.5em;
+}
+#add-task-priority {
+  width: 30%;
+}
+#add-task-date {
+  width: 30%;
+}
+.new-task form input, .new-task form select{
+  padding: 0.4rem;
+}
+.new-task form input[type="submit"] {
+  margin-top: 1rem;
+  width: 30%;
+  background-color: rgb(250, 84, 84);
+  font-size: 1rem;
+  text-align: center;
+}
 
-/* User added projects */
+
+
+/* User added div */
 #projects-body ul {
   padding: 0;
 }
@@ -166,6 +215,7 @@ aside {
   width: auto;
   text-align: center;
 }
-#projects-body .projects-children:hover{
+#projects-body .projects-children:hover {
   background-color: rgb(209, 201, 201);
 }
+
