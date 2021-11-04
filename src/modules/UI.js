@@ -1,5 +1,6 @@
 import Project from "./projectManager.js";
 import { renderToDoList } from "./render.js";
+import { toDoItem } from "./toDoList.js";
 
 const mainContainer = document.querySelector(".main-container");
 const tabContainer = document.querySelector("#tab-container");
@@ -35,19 +36,19 @@ function addTask(e) {
   let parent = document.querySelector("#main-todo");
 
   div.innerHTML = `
-  <form>
+  <form method="post">
 
   <h3>Add Task</h3>
 
   <input type="text" name="name" id="add-task-name" placeholder="Name">
-  <input type="text" name="name" id="add-task-desc" placeholder="Description">
+  <input type="text" name="desc" id="add-task-desc" placeholder="Description">
   <span>
   <input type="date" name="date" id="add-task-date">
   <select name="priority" id="add-task-priority">
     <option value="">Select Task Priority</option>
-    <option value="high"> High </option>
-    <option value="medium"> Medium </option>
-    <option value="low"> Low </option>
+    <option value="High"> High </option>
+    <option value="Medium"> Medium </option>
+    <option value="Low"> Low </option>
   </select>
   </span>
 
@@ -77,10 +78,42 @@ function addTask(e) {
       e.preventDefault();
       if (input.value === "Add" && inputField.value != "") {
         div.remove();
+
+        let form = newTaskDiv.querySelector("form");
+        let name = form.elements["name"].value;
+        let desc = form.elements["desc"].value;
+        let date = form.elements["date"].value;
+        let priority = form.elements["priority"].value;
+
+        const currentlySelected = tabContainer
+          .querySelector(".selected")
+          .getAttribute("id");
+
+        //currentlySelected is a project, add new task to project
+        if (!isNaN(currentlySelected)) {
+          //console.log(currentlySelected);
+          const currentProject =
+            projectsDatabase.projectsList[currentlySelected];
+          const objName = Object.keys(currentProject)[0];
+
+          let toDoList = currentProject[objName];
+          let toDoTask = new toDoItem(name, desc, date, priority);
+          toDoList.newItem(toDoTask);
+
+          renderToDoList(projectsDatabase, currentlySelected, "Project");
+          //console.log(toDoList);
+        }
+
+        //currentlySelected is Inbox/Today/Upcoming
+        else {
+        }
+
         button.style.display = "inline-block";
       } else if (inputField.value == "" && input.value != "Cancel") {
         alert("Name must be at least 1 character");
-      } else {
+      }
+      //cancel
+      else {
         div.remove();
         button.style.display = "inline-block";
       }
@@ -123,7 +156,9 @@ function newProjectPrompt() {
         div.remove();
       } else if (inputField.value == "" && input.value != "Cancel") {
         alert("Name must be at least 1 character");
-      } else {
+      }
+      //cancel
+      else {
         div.remove();
       }
     })
@@ -146,7 +181,8 @@ function insertProjectDiv(name, id) {
 
 //reset selections
 function resetButtons(e) {
-  let selectedDiv = e.target;
+  //console.log(e)
+  let selectedDiv = e;
   let buttons = tabContainer.querySelectorAll("button");
 
   buttons.forEach((button) => {
@@ -170,15 +206,30 @@ function displayProjectDiv(e) {
 }
 
 function displayInboxDiv(e) {
-  resetButtons(e);
+  if (e.target.nodeName == "I") {
+    e = e.target.parentElement;
+    resetButtons(e);
+  } else {
+    resetButtons(e.target);
+  }
 }
 
 function displayTodayDiv(e) {
-  resetButtons(e);
+  if (e.target.nodeName == "I") {
+    e = e.target.parentElement;
+    resetButtons(e);
+  } else {
+    resetButtons(e.target);
+  }
 }
 
 function displayUpcomingDiv(e) {
-  resetButtons(e);
+  if (e.target.nodeName == "I") {
+    e = e.target.parentElement;
+    resetButtons(e);
+  } else {
+    resetButtons(e.target);
+  }
 }
 
 function displayProjectList(e) {}

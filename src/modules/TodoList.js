@@ -43,14 +43,14 @@ class toDoList {
 
 //toDoItem is a class
 class toDoItem {
-  constructor(name, description, dueDate, priority) {
-    this.name = name;
+  constructor(title, description, dueDate, priority) {
+    this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
   }
 
-  set name(value) {
+  set title(value) {
     if (value.length > 30) {
       alert("Title is too long");
       return;
@@ -67,17 +67,13 @@ class toDoItem {
   }
 
   set dueDate(value) {
-    const month = value.split("/")[0];
-    const day = value.split("/")[1];
-    const year = value.split("/")[2];
+    const year = value.split("-")[0];
+    const month = value.split("-")[1];
+    const day = value.split("-")[2];
     this._dueDate = `${month}/${day}/${year}`;
   }
 
   set priority(value) {
-    if (isNaN(value)) {
-      alert("Not a valid priority");
-      return;
-    }
     this._priority = value;
   }
 
