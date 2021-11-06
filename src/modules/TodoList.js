@@ -1,8 +1,7 @@
 //toDoList has an array of toDoItem
-class toDoList { 
-  
+class toDoList {
   constructor(name) {
-    this.name=name;
+    this.name = name;
     this.items = [];
   }
 
@@ -30,6 +29,10 @@ class toDoList {
   updateItem(itemName, updateType, updateData) {
     let item = this.findItem(itemName);
     item.updateType = updateData;
+  }
+
+  removeItem(index) {
+    this.items.splice(index, 1);
   }
 
   getItems() {
@@ -67,10 +70,15 @@ class toDoItem {
   }
 
   set dueDate(value) {
-    const year = value.split("-")[0];
-    const month = value.split("-")[1];
-    const day = value.split("-")[2];
-    this._dueDate = `${month}/${day}/${year}`;
+    let year = value.split("-")[0];
+    let month = value.split("-")[1];
+    let day = value.split("-")[2];
+
+    if (month == undefined || day == undefined || year == undefined) {
+      this._dueDate = "None";
+    } else {
+      this._dueDate = `${month}/${day}/${year}`;
+    }
   }
 
   set priority(value) {

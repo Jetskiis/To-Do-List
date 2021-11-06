@@ -224,16 +224,54 @@ aside {
 
   width: 100%;
   padding: 1em 0.25em;
-  line-height: 2em;
-  font-size: 1.4em;
+  line-height: 1.4em;
+  font-size: 1.3em;
+  border-bottom: 1px solid grey;
+}
+.task span {
+  margin-left: 1em;
 }
 .top{
   display: inline-grid;
-  grid-template-columns: 1fr 6fr 6fr 6fr 1fr;
+  grid-template-columns: 1.25em 3fr 3fr 3fr 1.25em;
   grid-auto-flow: column;
 }
-
 .bottom{
   padding-left: 1.8em;
   color: rgba(94, 91, 91, 0.788);
+}
+.task i {
+  display: flex;
+  justify-content: center;
+
+}
+.task i:hover {
+  padding: 0;
+  background-color:rgb(209, 201, 201);
+}
+.delete-task-popup{
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  width: 15em;
+  border: 1px black solid;
+}
+.delete-task-popup h3 {
+  padding: 0.5em;
+  line-height: 1.3em;
+  text-align: center;
+  font-size: 1.3em;
+  border-bottom: 1px solid gray;
+}
+.delete-task-popup span {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 0.8em;
+}
+.delete-task-popup input {
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.7em 1.2em;
+  background-color: red;
 }
