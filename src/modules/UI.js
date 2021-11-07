@@ -15,6 +15,9 @@ const addTaskButton = document.querySelector("#add-task");
 let projectsDatabase = new Project();
 let projectsDiv = document.querySelector("#projects-body");
 
+let inboxDatabase = new Project();
+inboxDatabase.addProject("Inbox");
+
 //inbox is selected by default
 inbox.classList.add("selected");
 
@@ -31,7 +34,6 @@ export function addEventListeners() {
 //add new task to current to do list selection
 function addTask(e) {
   let button = e.target;
-  let dimensions = button.getBoundingClientRect();
   let div = document.createElement("div");
   let parent = document.querySelector("#main-todo");
 
@@ -62,11 +64,11 @@ function addTask(e) {
 `;
 
   button.style.display = "none";
-  div.style.x = dimensions.x;
-  div.style.y = dimensions.y;
-  div.classList.add("new-task");
 
+  div.style['z-index']="2";
+  div.classList.add("new-task");
   parent.appendChild(div);
+  addPageLock();
 
   let newTaskDiv = document.querySelector(".new-task");
   let inputField = newTaskDiv.querySelector("#add-task-name");
@@ -78,6 +80,7 @@ function addTask(e) {
       e.preventDefault();
       if (input.value === "Add" && inputField.value != "") {
         div.remove();
+        removePageLock();
 
         let form = newTaskDiv.querySelector("form");
         let name = form.elements["name"].value;
@@ -105,8 +108,19 @@ function addTask(e) {
         }
 
         //currentlySelected is Inbox/Today/Upcoming
-        else {
+        else if (currentlySelected == "inbox"){
+          const inboxObj = inboxDatabase.projectsList[0];
+          const toDoList = inboxObj.Inbox;
+
+          let toDoTask = new toDoItem(name,desc,date,priority);
+          toDoList.newItem(toDoTask);
+
+          renderToDoList(inboxDatabase, null, "Inbox");
         }
+
+        //currentlySelected is Today/Upcoming
+
+
 
         button.style.display = "inline-block";
       } else if (inputField.value == "" && input.value != "Cancel") {
@@ -115,6 +129,7 @@ function addTask(e) {
       //cancel
       else {
         div.remove();
+        removePageLock();
         button.style.display = "inline-block";
       }
     })
@@ -138,7 +153,9 @@ function newProjectPrompt() {
     `;
 
   div.classList.add("new-project-card");
+  div.style['z-index']="2";
   mainContainer.appendChild(div);
+  addPageLock();
 
   let newProjectCard = document.querySelector(".new-project-card");
   let inputField = newProjectCard.querySelector("input[type=text]");
@@ -148,18 +165,24 @@ function newProjectPrompt() {
   submitBoxes.forEach((input) =>
     input.addEventListener("click", (e) => {
       e.preventDefault();
-      if (input.value === "Add" && inputField.value != "") {
+
+      if(input.value === "Add" && inputField.value.toLowerCase() == "inbox"){
+        alert("inbox is an invalid name, try something else");
+      }
+      else if (input.value === "Add" && inputField.value != "") {
         let inputValue = document.querySelector("input[type=text]").value;
         let currentId = projectsDatabase.projectsList.length;
         projectsDatabase.addProject(inputValue);
         insertProjectDiv(inputValue, currentId);
         div.remove();
+        removePageLock();
       } else if (inputField.value == "" && input.value != "Cancel") {
         alert("Name must be at least 1 character");
       }
       //cancel
       else {
         div.remove();
+        removePageLock();
       }
     })
   );
@@ -212,6 +235,8 @@ function displayInboxDiv(e) {
   } else {
     resetButtons(e.target);
   }
+
+  renderToDoList(inboxDatabase, null, "Inbox");
 }
 
 function displayTodayDiv(e) {
@@ -232,6 +257,20 @@ function displayUpcomingDiv(e) {
   }
 }
 
+//makes it so only one popup can be selected at once and the rest of the page is unselectable
+export function addPageLock(){
+  let pageLock = document.createElement("div");
+  pageLock.classList.add("page-lock");
+  document.body.appendChild(pageLock);
+}
+
+export function removePageLock(){
+  let pageLock=document.querySelectorAll(".page-lock");
+  pageLock.forEach((element)=>element.remove());
+}
+
+
+
 function displayProjectList(e) {}
 
 /* function renderToDoList(type,id) {
@@ -248,3 +287,4 @@ function displayProjectList(e) {}
     
   }
 } */
+

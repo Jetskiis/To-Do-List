@@ -137,13 +137,14 @@ aside {
 #add-task:hover {
   background-color: rgb(239, 239, 239);
 }
-/*Add new project card */
+/*Add new project prompt */
 .new-project-card {
   position: absolute;
   top: 40%;
   left: 40%;
   width: 25em;
   border: 1px black solid;
+  background-color: white;
 }
 .new-project-card h3 {
   text-align: center;
@@ -174,10 +175,13 @@ aside {
 }
 /*Add task prompt*/
 .new-task {
+  position: relative;
+  right: 6em;
   width: 70%;
   margin: auto;
   margin-top: 1.5em;
   border: 1px solid black;
+  background-color: white;
 }
 .new-task form {
   display: flex;
@@ -231,30 +235,31 @@ aside {
 .task span {
   margin-left: 1em;
 }
-.top{
+.top {
   display: inline-grid;
   grid-template-columns: 1.25em 3fr 3fr 3fr 1.25em;
   grid-auto-flow: column;
 }
-.bottom{
+.bottom {
   padding-left: 1.8em;
   color: rgba(94, 91, 91, 0.788);
 }
 .task i {
   display: flex;
   justify-content: center;
-
 }
 .task i:hover {
   padding: 0;
-  background-color:rgb(209, 201, 201);
+  background-color: rgb(209, 201, 201);
 }
-.delete-task-popup{
+/* popup asking to confirm delete task */
+.delete-task-popup {
   position: absolute;
   top: 40%;
   left: 45%;
   width: 15em;
   border: 1px black solid;
+  background-color: white;
 }
 .delete-task-popup h3 {
   padding: 0.5em;
@@ -274,4 +279,18 @@ aside {
   font-weight: 600;
   padding: 0.7em 1.2em;
   background-color: red;
+}
+/*page lock div */
+.page-lock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background-color: grey;
+  opacity: 0.8;
 }
