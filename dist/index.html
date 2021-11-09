@@ -19,7 +19,6 @@
     </header>
     <main>
       <aside>
-        <div class="sidebar">
           <div id="tab-container">
             <button id="inbox"><i class="fas fa-inbox"></i>Inbox</button>
 
@@ -29,18 +28,33 @@
               <i class="fas fa-calendar-minus"></i>Upcoming
             </button>
 
-            <button id="projects"><i class="fas fa-caret-down fa-1x"></i><h2>Projects</h2></button>
-          </div>
+            <div id="projects">
+              <div id="projects-header">
+                <button id="projects-slider"><i class="fas fa-caret-down fa-1x"></i></button>
+                <h2>Projects</h2>
+                <button id="add-project"> <i class="fas fa-plus"></i> </button>
+              </div>
+              <div id="projects-body">
+                <ul></ul>
+              </div>
+
+            </div>
+            
           </div>
         </div>
       </aside>
 
       <section class="main">
         <div class="main-container">
-          <h2>Inbox</h2>
+          <div id="main-todo">
+            <h2>Inbox</h2>
             <button id="add-task"><i class="fas fa-plus"></i>Add Task</button>
+          </div>
+
         </div>
       </section>
+
+      
     </main>
 
   </body>

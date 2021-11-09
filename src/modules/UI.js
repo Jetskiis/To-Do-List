@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+import { todayHandler, upcomingHandler } from "./logic.js";
 import Project from "./projectManager.js";
 import { renderToDoList } from "./render.js";
 import { toDoItem } from "./toDoList.js";
@@ -17,6 +19,12 @@ let projectsDiv = document.querySelector("#projects-body");
 
 let inboxDatabase = new Project();
 inboxDatabase.addProject("Inbox");
+
+let todayDatabase = new Project();
+todayDatabase.addProject("Today");
+
+let upcomingDatabase = new Project();
+upcomingDatabase.addProject("Upcoming");
 
 //inbox is selected by default
 inbox.classList.add("selected");
@@ -65,7 +73,7 @@ function addTask(e) {
 
   button.style.display = "none";
 
-  div.style['z-index']="2";
+  div.style["z-index"] = "2";
   div.classList.add("new-task");
   parent.appendChild(div);
   addPageLock();
@@ -73,24 +81,20 @@ function addTask(e) {
   let newTaskDiv = document.querySelector(".new-task");
   let inputField = newTaskDiv.querySelector("#add-task-name");
   let submitBoxes = newTaskDiv.querySelectorAll("input[type=submit]");
+  const currentlySelected = tabContainer
+    .querySelector(".selected")
+    .getAttribute("id");
 
   //checks user input
   submitBoxes.forEach((input) =>
     input.addEventListener("click", (e) => {
       e.preventDefault();
       if (input.value === "Add" && inputField.value != "") {
-        div.remove();
-        removePageLock();
-
         let form = newTaskDiv.querySelector("form");
         let name = form.elements["name"].value;
         let desc = form.elements["desc"].value;
         let date = form.elements["date"].value;
         let priority = form.elements["priority"].value;
-
-        const currentlySelected = tabContainer
-          .querySelector(".selected")
-          .getAttribute("id");
 
         //currentlySelected is a project, add new task to project
         if (!isNaN(currentlySelected)) {
@@ -108,19 +112,38 @@ function addTask(e) {
         }
 
         //currentlySelected is Inbox/Today/Upcoming
-        else if (currentlySelected == "inbox"){
+        else if (currentlySelected == "inbox") {
           const inboxObj = inboxDatabase.projectsList[0];
           const toDoList = inboxObj.Inbox;
 
-          let toDoTask = new toDoItem(name,desc,date,priority);
+          let toDoTask = new toDoItem(name, desc, date, priority);
           toDoList.newItem(toDoTask);
 
           renderToDoList(inboxDatabase, null, "Inbox");
         }
 
         //currentlySelected is Today/Upcoming
+        else if (currentlySelected == "today") {
+          const todayObj = todayDatabase.projectsList[0];
+          const toDoList = todayObj.Today;
 
+          let currentDate = format(new Date(), "yyyy-MM-dd");
+          if (date != currentDate) {
+            date = currentDate;
+            let toDoTask = new toDoItem(name, desc, date, priority);
+            toDoList.newItem(toDoTask);
+            alert("Date automatically set to today");
+          } else {
+            let toDoTask = new toDoItem(name, desc, date, priority);
+            toDoList.newItem(toDoTask);
+          }
 
+          todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
+        } else if (currentlySelected == "upcoming") {
+        }
+
+        div.remove();
+        removePageLock();
 
         button.style.display = "inline-block";
       } else if (inputField.value == "" && input.value != "Cancel") {
@@ -153,7 +176,7 @@ function newProjectPrompt() {
     `;
 
   div.classList.add("new-project-card");
-  div.style['z-index']="2";
+  div.style["z-index"] = "2";
   mainContainer.appendChild(div);
   addPageLock();
 
@@ -166,10 +189,9 @@ function newProjectPrompt() {
     input.addEventListener("click", (e) => {
       e.preventDefault();
 
-      if(input.value === "Add" && inputField.value.toLowerCase() == "inbox"){
+      if (input.value === "Add" && inputField.value.toLowerCase() == "inbox") {
         alert("inbox is an invalid name, try something else");
-      }
-      else if (input.value === "Add" && inputField.value != "") {
+      } else if (input.value === "Add" && inputField.value != "") {
         let inputValue = document.querySelector("input[type=text]").value;
         let currentId = projectsDatabase.projectsList.length;
         projectsDatabase.addProject(inputValue);
@@ -246,6 +268,8 @@ function displayTodayDiv(e) {
   } else {
     resetButtons(e.target);
   }
+
+  todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
 }
 
 function displayUpcomingDiv(e) {
@@ -255,36 +279,20 @@ function displayUpcomingDiv(e) {
   } else {
     resetButtons(e.target);
   }
+
+  upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);
 }
 
 //makes it so only one popup can be selected at once and the rest of the page is unselectable
-export function addPageLock(){
+export function addPageLock() {
   let pageLock = document.createElement("div");
   pageLock.classList.add("page-lock");
   document.body.appendChild(pageLock);
 }
 
-export function removePageLock(){
-  let pageLock=document.querySelectorAll(".page-lock");
-  pageLock.forEach((element)=>element.remove());
+export function removePageLock() {
+  let pageLock = document.querySelectorAll(".page-lock");
+  pageLock.forEach((element) => element.remove());
 }
 
-
-
 function displayProjectList(e) {}
-
-/* function renderToDoList(type,id) {
-  if (type == "Project"){
-  render()
-  }
-  else if (type == "Today"){
-
-  }
-  else if (type =="Inbox"){
-
-  }
-  else if (type == "Upcoming") {
-    
-  }
-} */
-

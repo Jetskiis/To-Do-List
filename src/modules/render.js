@@ -5,7 +5,31 @@ const mainToDo = document.querySelector("#main-todo");
 let name = mainToDo.querySelector("h2");
 const button = mainToDo.querySelector("#add-task");
 
-//renders to do list for INBOX/TODAY/PROJECTS
+//basic rendering
+export function render(element, flag) {
+  let div = document.createElement("div");
+  div.innerHTML = `
+  <div class="top">
+  <i class="far fa-circle delete"></i>
+  <span> ${element.getTitle()}</span>
+  <span >Due Date: ${element.getDueDate()}  </span>
+  <span> Priority: ${
+    element.getPriority() != "" ? element.getPriority() : "None"
+  }  </span>
+  <i class="fas fa-bars edit"></i>
+  </div>
+
+  <div class="bottom">
+  Description: ${element.getDescription()}
+  </div>
+  `;
+
+  div.classList.add("task");
+  div.classList.add(`from-${flag}`);
+  mainToDo.insertBefore(div, button);
+}
+
+//renders to do list for INBOX/PROJECTS
 export function renderToDoList(projectList, id, type) {
   const database = projectList;
 
@@ -19,25 +43,7 @@ export function renderToDoList(projectList, id, type) {
     let toDoList = project[projectName];
 
     for (const element of toDoList.getItems()) {
-      let div = document.createElement("div");
-      div.innerHTML = `
-      <div class="top">
-      <i class="far fa-circle delete"></i>
-      <span> ${element.getTitle()}</span>
-      <span >Due Date: ${element.getDueDate()}  </span>
-      <span> Priority: ${
-        element.getPriority() != "" ? element.getPriority() : "None"
-      }  </span>
-      <i class="fas fa-bars edit"></i>
-      </div>
-
-      <div class="bottom">
-      Description: ${element.getDescription()}
-      </div>
-      `;
-
-      div.classList.add("task");
-      mainToDo.insertBefore(div, button);
+      render(element, "project");
     }
 
     name.textContent = projectName;
@@ -46,25 +52,7 @@ export function renderToDoList(projectList, id, type) {
     const toDoList = inboxObj.Inbox;
 
     for (const element of toDoList.getItems()) {
-      let div = document.createElement("div");
-      div.innerHTML = `
-      <div class="top">
-      <i class="far fa-circle delete"></i>
-      <span> ${element.getTitle()}</span>
-      <span >Due Date: ${element.getDueDate()}  </span>
-      <span> Priority: ${
-        element.getPriority() != "" ? element.getPriority() : "None"
-      }  </span>
-      <i class="fas fa-bars edit"></i>
-      </div>
-
-      <div class="bottom">
-      Description: ${element.getDescription()}
-      </div>
-      `;
-
-      div.classList.add("task");
-      mainToDo.insertBefore(div, button);
+      render(element, "inbox");
     }
 
     name.textContent = "Inbox";
@@ -82,7 +70,7 @@ export function renderToDoList(projectList, id, type) {
       }) */
 }
 
-function deleteTaskPopup(e, database) {
+export function deleteTaskPopup(e, database) {
   //create prompt for user to confirm/deny deleting a task
   let originalElement = e;
   let popup = document.createElement("div");
@@ -118,7 +106,7 @@ function deleteTaskPopup(e, database) {
   });
 }
 
-function deleteTask(e, database) {
+export function deleteTask(e, database) {
   let selected = document.querySelector(".selected");
   let target = e.target;
   const toDoArr = mainToDo.querySelectorAll(".task");
@@ -149,5 +137,26 @@ function deleteTask(e, database) {
     );
     toDoList.removeItem(indexOfSelectedElement);
     target.parentElement.parentElement.remove();
+  }
+
+  //delete today task
+  else if (selected.getAttribute("id") == "today") {
+    const todayObj = database.projectsList[0];
+    const toDoList = todayObj.Today;
+
+    if (target.parentElement.parentElement.classList.contains("from-project")) {
+      alert("Delete the task from the project that it is in");
+    } else if (
+      target.parentElement.parentElement.classList.contains("from-inbox")
+    ) {
+      alert("Delete the task from the Inbox section");
+    } else {
+      let newToDoArr = Array.from(mainToDo.querySelectorAll(".from-today"));
+      let indexOfSelectedElement = newToDoArr.findIndex(
+        (element) => element == target.parentElement.parentElement
+      );
+      toDoList.removeItem(indexOfSelectedElement);
+      target.parentElement.parentElement.remove();
+    }
   }
 }
