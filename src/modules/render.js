@@ -159,4 +159,25 @@ export function deleteTask(e, database) {
       target.parentElement.parentElement.remove();
     }
   }
+
+  //delete upcoming task
+  else if (selected.getAttribute("id") == "upcoming") {
+    const upcomingObj = database.projectsList[0];
+    const toDoList = upcomingObj.Upcoming;
+
+    if (target.parentElement.parentElement.classList.contains("from-project")) {
+      alert("Delete the task from the project that it is in");
+    } else if (
+      target.parentElement.parentElement.classList.contains("from-inbox")
+    ) {
+      alert("Delete the task from the Inbox section");
+    } else {
+      let newToDoArr = Array.from(mainToDo.querySelectorAll(".from-upcoming"));
+      let indexOfSelectedElement = newToDoArr.findIndex(
+        (element) => element == target.parentElement.parentElement
+      );
+      toDoList.removeItem(indexOfSelectedElement);
+      target.parentElement.parentElement.remove();
+    }
+  }
 }

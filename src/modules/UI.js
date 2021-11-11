@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import isSameWeek from "date-fns/isSameWeek";
 import { todayHandler, upcomingHandler } from "./logic.js";
 import Project from "./projectManager.js";
 import { renderToDoList } from "./render.js";
@@ -140,6 +141,25 @@ function addTask(e) {
 
           todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
         } else if (currentlySelected == "upcoming") {
+          const upcomingObj = upcomingDatabase.projectsList[0];
+          const toDoList = upcomingObj.Upcoming;
+
+          let formattedCurrentDate = new Date();
+          let year = date.split("-")[0];
+          let month = date.split("-")[1];
+          let day = date.split("-")[2];
+
+          let formattedProjectDate = new Date(year, month - 1, day);
+
+          if (isSameWeek(formattedCurrentDate, formattedProjectDate)) {
+            let toDoTask = new toDoItem(name, desc, date, priority);
+            toDoList.newItem(toDoTask);
+          }
+          else {
+            alert("Task must be due this week to be considered upcoming, try again");
+          }
+
+          upcomingHandler(upcomingDatabase,inboxDatabase,projectsDatabase);
         }
 
         div.remove();
