@@ -306,22 +306,22 @@ function displayUpcomingDiv(e) {
 
 //makes it so only one popup can be selected at once and the rest of the page is unselectable
 export function addPageLock() {
-/*   let pageLock = document.createElement("div");
+  let pageLock = document.createElement("div");
   pageLock.classList.add("page-lock");
   document.body.appendChild(pageLock);
 
   let task = document.querySelectorAll(".task");
-  task.forEach((element)=> element.classList.add("lock"));
-  tabContainer.classList.add("lock"); */
+  task.forEach((element) => element.classList.add("lock"));
+  tabContainer.classList.add("lock");
 }
 
 export function removePageLock() {
-/*   let taskLock = document.querySelectorAll(".task");
-  taskLock.forEach((element) => element.remove());
+  let taskLock = document.querySelectorAll(".task");
+  taskLock.forEach((element) => element.classList.remove("lock"));
   tabContainer.classList.remove("lock");
 
   let pageLock = document.querySelector(".page-lock");
-  pageLock.remove(); */
+  pageLock.remove();
 }
 
 function displayProjectList(e) {
