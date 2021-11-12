@@ -86,6 +86,11 @@ aside {
 }
 
 /* projects section of sidebar */
+.collapse {
+  transition: 0.5s;
+  position: absolute;
+  transform:translate(-50em);
+}
 #projects-body {
   margin-top: 0.25em;
 }
@@ -293,4 +298,7 @@ aside {
   pointer-events: none;
   background-color: grey;
   opacity: 0.8;
+}
+.lock {
+  pointer-events: none;
 }

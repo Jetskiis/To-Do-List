@@ -154,12 +154,13 @@ function addTask(e) {
           if (isSameWeek(formattedCurrentDate, formattedProjectDate)) {
             let toDoTask = new toDoItem(name, desc, date, priority);
             toDoList.newItem(toDoTask);
-          }
-          else {
-            alert("Task must be due this week to be considered upcoming, try again");
+          } else {
+            alert(
+              "Task must be due this week to be considered upcoming, try again"
+            );
           }
 
-          upcomingHandler(upcomingDatabase,inboxDatabase,projectsDatabase);
+          upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);
         }
 
         div.remove();
@@ -305,14 +306,28 @@ function displayUpcomingDiv(e) {
 
 //makes it so only one popup can be selected at once and the rest of the page is unselectable
 export function addPageLock() {
-  let pageLock = document.createElement("div");
+/*   let pageLock = document.createElement("div");
   pageLock.classList.add("page-lock");
   document.body.appendChild(pageLock);
+
+  let task = document.querySelectorAll(".task");
+  task.forEach((element)=> element.classList.add("lock"));
+  tabContainer.classList.add("lock"); */
 }
 
 export function removePageLock() {
-  let pageLock = document.querySelectorAll(".page-lock");
-  pageLock.forEach((element) => element.remove());
+/*   let taskLock = document.querySelectorAll(".task");
+  taskLock.forEach((element) => element.remove());
+  tabContainer.classList.remove("lock");
+
+  let pageLock = document.querySelector(".page-lock");
+  pageLock.remove(); */
 }
 
-function displayProjectList(e) {}
+function displayProjectList(e) {
+  let i = projectsSlider.querySelector("i");
+  projectsDiv.classList.toggle("collapse");
+
+  i.classList.toggle("fa-caret-down");
+  i.classList.toggle("fa-caret-right");
+}
