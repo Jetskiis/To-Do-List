@@ -1,5 +1,6 @@
 import { format, isSameWeek } from "date-fns";
 import { deleteTaskPopup, render } from "./render.js";
+import { editTask } from "./UI.js";
 
 const mainContainer = document.querySelector(".main-container");
 const mainToDo = document.querySelector("#main-todo");
@@ -55,9 +56,9 @@ export function todayHandler(todayDatabase, inboxDatabase, projectsDatabase) {
     element.addEventListener("click", (e) => deleteTaskPopup(e, todayDatabase));
   });
 
-  /*       editButtonArr.forEach((element) => {
-        element.addEventListener("click",);
-      }) */
+  editButtonArr.forEach((element) => {
+    element.addEventListener("click", editTask);
+  });
 
   name.textContent = "Today's Tasks";
 }
@@ -132,9 +133,9 @@ export function upcomingHandler(
     );
   });
 
-  /*       editButtonArr.forEach((element) => {
-        element.addEventListener("click",);
-      }) */
+  editButtonArr.forEach((element) => {
+    element.addEventListener("click", editTask);
+  });
 
   name.textContent = "This Week's Tasks";
 }

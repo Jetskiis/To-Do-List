@@ -109,7 +109,7 @@ function addTask(e) {
           toDoList.newItem(toDoTask);
 
           renderToDoList(projectsDatabase, currentlySelected, "Project");
-          //console.log(toDoList);
+          //console.log(toDoList);editTask
         }
 
         //currentlySelected is Inbox/Today/Upcoming
@@ -158,6 +158,204 @@ function addTask(e) {
             alert(
               "Task must be due this week to be considered upcoming, try again"
             );
+          }
+
+          upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);
+        }
+
+        div.remove();
+        removePageLock();
+
+        button.style.display = "inline-block";
+      } else if (inputField.value == "" && input.value != "Cancel") {
+        alert("Name must be at least 1 character");
+      }
+      //cancel
+      else {
+        div.remove();
+        removePageLock();
+        button.style.display = "inline-block";
+      }
+    })
+  );
+}
+
+//edit existing task
+export function editTask(e) {
+  let button = e.target;
+  let selectedDiv = button.parentElement.parentElement;
+  let selectedDivSpan = selectedDiv.querySelectorAll("span");
+  let div = document.createElement("div");
+  let parent = document.querySelector("#main-todo");
+  let toDoArr = parent.querySelectorAll(".task");
+
+  div.innerHTML = `
+  <form method="post">
+
+  <h3>Edit Task</h3>
+
+  <input type="text" name="name" id="add-task-name" placeholder="Name" value="${selectedDivSpan[0].innerText.trim()}">
+  <input type="text" name="desc" id="add-task-desc" placeholder="Description" value="${selectedDiv
+    .querySelector(".bottom")
+    .innerText.substring(
+      selectedDiv.querySelector(".bottom").innerText.indexOf(" ")
+    )
+    .trim()}">
+  <span>
+  <input type="date" name="date" id="add-task-date">
+  <select name="priority" id="add-task-priority">
+    <option value="">Select Task Priority</option>
+    <option value="High"> High </option>
+    <option value="Medium"> Medium </option>
+    <option value="Low"> Low </option>
+  </select>
+  </span>
+
+  <span>
+  <input type="submit" value="Edit">
+  <input type="submit" value="Cancel">
+  </span>
+
+  </form>
+`;
+
+  button.style.display = "none";
+
+  div.style["z-index"] = "2";
+  div.classList.add("new-task");
+  parent.appendChild(div);
+  addPageLock();
+
+  let newTaskDiv = document.querySelector(".new-task");
+  let inputField = newTaskDiv.querySelector("#add-task-name");
+  let submitBoxes = newTaskDiv.querySelectorAll("input[type=submit]");
+  const currentlySelected = tabContainer
+    .querySelector(".selected")
+    .getAttribute("id");
+
+  //checks user input
+  submitBoxes.forEach((input) =>
+    input.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (input.value === "Edit" && inputField.value != "") {
+        let form = newTaskDiv.querySelector("form");
+        let name = form.elements["name"].value;
+        let desc = form.elements["desc"].value;
+        let date = form.elements["date"].value;
+        let priority = form.elements["priority"].value;
+
+        //currentlySelected is a project, edit task
+        if (!isNaN(currentlySelected)) {
+          let newToDoArr = Array.from(toDoArr);
+          let indexOfSelectedElement = newToDoArr.findIndex(
+            (element) => element == button.parentElement.parentElement
+          );
+          button.parentElement.parentElement.remove();
+
+          const currentProject =
+            projectsDatabase.projectsList[currentlySelected];
+          const objName = Object.keys(currentProject)[0];
+
+          let toDoList = currentProject[objName];
+          let toDoTask = new toDoItem(name, desc, date, priority);
+          toDoList.updateItem(indexOfSelectedElement, toDoTask);
+
+          renderToDoList(projectsDatabase, currentlySelected, "Project");
+          //console.log(toDoList);
+        }
+
+        //currentlySelected is Inbox
+        else if (currentlySelected == "inbox") {
+          let newToDoArr = Array.from(toDoArr);
+          let indexOfSelectedElement = newToDoArr.findIndex(
+            (element) => element == button.parentElement.parentElement
+          );
+          button.parentElement.parentElement.remove();
+
+          const inboxObj = inboxDatabase.projectsList[0];
+          const toDoList = inboxObj.Inbox;
+
+          let toDoTask = new toDoItem(name, desc, date, priority);
+          toDoList.updateItem(indexOfSelectedElement, toDoTask);
+
+          renderToDoList(inboxDatabase, null, "Inbox");
+        }
+
+        //currentlySelected is Today
+        else if (currentlySelected == "today") {
+          const todayObj = todayDatabase.projectsList[0];
+          const toDoList = todayObj.Today;
+
+          if (
+            button.parentElement.parentElement.classList.contains(
+              "from-project"
+            )
+          ) {
+            alert("Edit the task from the project that it is in");
+          } else if (
+            button.parentElement.parentElement.classList.contains("from-inbox")
+          ) {
+            alert("Edit the task from the Inbox section");
+          } else {
+            let currentDate = format(new Date(), "yyyy-MM-dd");
+            let newToDoArr = Array.from(
+              mainContainer.querySelectorAll(".from-today")
+            );
+            let indexOfSelectedElement = newToDoArr.findIndex(
+              (element) => element == button.parentElement.parentElement
+            );
+            button.parentElement.parentElement.remove();
+
+            if (date != currentDate) {
+              date = currentDate;
+              let toDoTask = new toDoItem(name, desc, date, priority);
+              toDoList.updateItem(indexOfSelectedElement, toDoTask);
+              alert("Date automatically set to today");
+            } else {
+              let toDoTask = new toDoItem(name, desc, date, priority);
+              toDoList.updateItem(indexOfSelectedElement, toDoTask);
+            }
+          }
+
+          todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
+        } else if (currentlySelected == "upcoming") {
+          const upcomingObj = upcomingDatabase.projectsList[0];
+          const toDoList = upcomingObj.Upcoming;
+
+          let formattedCurrentDate = new Date();
+          let year = date.split("-")[0];
+          let month = date.split("-")[1];
+          let day = date.split("-")[2];
+
+          let formattedProjectDate = new Date(year, month - 1, day);
+
+          if (
+            button.parentElement.parentElement.classList.contains(
+              "from-project"
+            )
+          ) {
+            alert("Edit the task from the project that it is in");
+          } else if (
+            button.parentElement.parentElement.classList.contains("from-inbox")
+          ) {
+            alert("Edit the task from the Inbox section");
+          } else {
+            let newToDoArr = Array.from(
+              mainContainer.querySelectorAll(".from-upcoming")
+            );
+            let indexOfSelectedElement = newToDoArr.findIndex(
+              (element) => element == button.parentElement.parentElement
+            );
+            button.parentElement.parentElement.remove();
+
+            if (isSameWeek(formattedCurrentDate, formattedProjectDate)) {
+              let toDoTask = new toDoItem(name, desc, date, priority);
+              toDoList.updateItem(indexOfSelectedElement,toDoTask);
+            } else {
+              alert(
+                "Task must be due this week to be considered upcoming, try again"
+              );
+            }
           }
 
           upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);

@@ -19,16 +19,8 @@ class toDoList {
     }
   }
 
-  findItem(itemName) {
-    for (const element of this.items) {
-      if (element.getTitle === itemName) return element;
-    }
-    return;
-  }
-
-  updateItem(itemName, updateType, updateData) {
-    let item = this.findItem(itemName);
-    item.updateType = updateData;
+  updateItem(id, newItem) {
+    this.items.splice(id,1,newItem);
   }
 
   removeItem(index) {

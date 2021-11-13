@@ -1,4 +1,4 @@
-import { addPageLock, removePageLock } from "./UI.js";
+import { addPageLock, editTask, removePageLock } from "./UI.js";
 
 const mainContainer = document.querySelector(".main-container");
 const mainToDo = document.querySelector("#main-todo");
@@ -20,7 +20,7 @@ export function render(element, flag) {
   </div>
 
   <div class="bottom">
-  Description: ${element.getDescription()}
+  Description: &nbsp;${element.getDescription()}
   </div>
   `;
 
@@ -65,9 +65,9 @@ export function renderToDoList(projectList, id, type) {
     element.addEventListener("click", (e) => deleteTaskPopup(e, database));
   });
 
-  /*       editButtonArr.forEach((element) => {
-        element.addEventListener("click",);
-      }) */
+  editButtonArr.forEach((element) => {
+    element.addEventListener("click", editTask);
+  });
 }
 
 export function deleteTaskPopup(e, database) {
