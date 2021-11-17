@@ -1,11 +1,11 @@
 # To-Do-List
-Functional To-Do-List website created using HTML &amp; CSS/ JavaScript that saves user data using local storage.
+Functional To-Do-List website created using HTML &amp; CSS/ JavaScript that saves user data using local storage.<br>
 Live Demo: 
 
-Features:
-4 separate To-Do-List sections: Inbox, Today, Upcoming, Projects 
-Adding, Editing, and Deleting tasks
-Saves user data with LocalStorage
+Features:<br>
+4 separate To-Do-List sections: Inbox, Today, Upcoming, Projects <br>
+Adding, Editing, and Deleting tasks<br>
+Saves user data with LocalStorage<br>
 
-
+<br>
 Inspired by todoist.com
