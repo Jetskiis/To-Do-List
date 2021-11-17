@@ -1,5 +1,5 @@
 # To-Do-List
-Functional To-Do-List website created using HTML &amp; CSS/ JavaScript that saves user data using local storage.<br>
+Functional To-Do-List website created using HTML &amp; CSS/ JavaScript.<br>
 Live Demo: 
 
 Features:<br>
