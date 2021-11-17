@@ -1,8 +1,9 @@
 import { format } from "date-fns";
 import isSameWeek from "date-fns/isSameWeek";
-import { todayHandler, upcomingHandler } from "./logic.js";
-import Project from "./projectManager.js";
+import { toClass, todayHandler, upcomingHandler } from "./logic.js";
+import Project from "./ProjectManager.js";
 import { renderToDoList } from "./render.js";
+import { storeData } from "./Storage.js";
 import { toDoItem } from "./toDoList.js";
 
 const mainContainer = document.querySelector(".main-container");
@@ -16,8 +17,6 @@ const addProjectButton = document.querySelector("#add-project");
 const addTaskButton = document.querySelector("#add-task");
 
 let projectsDatabase = new Project();
-let projectsDiv = document.querySelector("#projects-body");
-
 let inboxDatabase = new Project();
 inboxDatabase.addProject("Inbox");
 
@@ -26,6 +25,20 @@ todayDatabase.addProject("Today");
 
 let upcomingDatabase = new Project();
 upcomingDatabase.addProject("Upcoming");
+
+let projectsDiv = document.querySelector("#projects-body");
+
+if (
+  JSON.parse(localStorage.getItem("projectsDatabase")) ||
+  JSON.parse(localStorage.getItem("inboxDatabase")) ||
+  JSON.parse(localStorage.getItem("todayDatabase")) ||
+  JSON.parse(localStorage.getItem("upcomingDatabase"))
+) {
+  toClass("Inbox", inboxDatabase, localStorage.getItem("inboxDatabase"));
+  toClass("Today", todayDatabase, localStorage.getItem("todayDatabase"));
+  toClass("Upcoming",upcomingDatabase, localStorage.getItem("upcomingDatabase"));
+  toClass("Project",projectsDatabase, localStorage.getItem("projectsDatabase"));
+}
 
 //inbox is selected by default
 inbox.classList.add("selected");
@@ -108,6 +121,7 @@ function addTask(e) {
           let toDoTask = new toDoItem(name, desc, date, priority);
           toDoList.newItem(toDoTask);
 
+          storeData();
           renderToDoList(projectsDatabase, currentlySelected, "Project");
           //console.log(toDoList);editTask
         }
@@ -120,6 +134,7 @@ function addTask(e) {
           let toDoTask = new toDoItem(name, desc, date, priority);
           toDoList.newItem(toDoTask);
 
+          storeData();
           renderToDoList(inboxDatabase, null, "Inbox");
         }
 
@@ -139,6 +154,7 @@ function addTask(e) {
             toDoList.newItem(toDoTask);
           }
 
+          storeData();
           todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
         } else if (currentlySelected == "upcoming") {
           const upcomingObj = upcomingDatabase.projectsList[0];
@@ -160,6 +176,7 @@ function addTask(e) {
             );
           }
 
+          storeData();
           upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);
         }
 
@@ -260,6 +277,7 @@ export function editTask(e) {
           let toDoTask = new toDoItem(name, desc, date, priority);
           toDoList.updateItem(indexOfSelectedElement, toDoTask);
 
+          storeData();
           renderToDoList(projectsDatabase, currentlySelected, "Project");
           //console.log(toDoList);
         }
@@ -278,6 +296,7 @@ export function editTask(e) {
           let toDoTask = new toDoItem(name, desc, date, priority);
           toDoList.updateItem(indexOfSelectedElement, toDoTask);
 
+          storeData();
           renderToDoList(inboxDatabase, null, "Inbox");
         }
 
@@ -317,6 +336,7 @@ export function editTask(e) {
             }
           }
 
+          storeData();
           todayHandler(todayDatabase, inboxDatabase, projectsDatabase);
         } else if (currentlySelected == "upcoming") {
           const upcomingObj = upcomingDatabase.projectsList[0];
@@ -350,7 +370,7 @@ export function editTask(e) {
 
             if (isSameWeek(formattedCurrentDate, formattedProjectDate)) {
               let toDoTask = new toDoItem(name, desc, date, priority);
-              toDoList.updateItem(indexOfSelectedElement,toDoTask);
+              toDoList.updateItem(indexOfSelectedElement, toDoTask);
             } else {
               alert(
                 "Task must be due this week to be considered upcoming, try again"
@@ -358,6 +378,7 @@ export function editTask(e) {
             }
           }
 
+          storeData();
           upcomingHandler(upcomingDatabase, inboxDatabase, projectsDatabase);
         }
 
@@ -414,6 +435,7 @@ function newProjectPrompt() {
         let inputValue = document.querySelector("input[type=text]").value;
         let currentId = projectsDatabase.projectsList.length;
         projectsDatabase.addProject(inputValue);
+        storeData();
         insertProjectDiv(inputValue, currentId);
         div.remove();
         removePageLock();
@@ -430,7 +452,7 @@ function newProjectPrompt() {
 }
 
 //adds the new project to sidebar
-function insertProjectDiv(name, id) {
+export function insertProjectDiv(name, id) {
   let li = document.createElement("li");
   let button = document.createElement("button");
   li.appendChild(button);
@@ -441,6 +463,7 @@ function insertProjectDiv(name, id) {
   button.setAttribute("id", `${id}`);
   button.addEventListener("click", displayProjectDiv);
   projectsDiv.querySelector("ul").appendChild(li);
+  displayProjectList();
 }
 
 //reset selections
@@ -522,10 +545,13 @@ export function removePageLock() {
   pageLock.remove();
 }
 
-function displayProjectList(e) {
+function displayProjectList() {
   let i = projectsSlider.querySelector("i");
   projectsDiv.classList.toggle("collapse");
 
   i.classList.toggle("fa-caret-down");
   i.classList.toggle("fa-caret-right");
 }
+
+export { projectsDatabase, inboxDatabase, todayDatabase, upcomingDatabase };
+

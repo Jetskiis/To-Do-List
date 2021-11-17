@@ -1,4 +1,5 @@
 import { addPageLock, editTask, removePageLock } from "./UI.js";
+import { storeData } from "./Storage.js";
 
 const mainContainer = document.querySelector(".main-container");
 const mainToDo = document.querySelector("#main-todo");
@@ -124,6 +125,7 @@ export function deleteTask(e, database) {
     );
     toDoList.removeItem(indexOfSelectedElement);
     target.parentElement.parentElement.remove();
+    storeData();
   }
 
   //delete inbox task
@@ -137,6 +139,7 @@ export function deleteTask(e, database) {
     );
     toDoList.removeItem(indexOfSelectedElement);
     target.parentElement.parentElement.remove();
+    storeData();
   }
 
   //delete today task
@@ -157,6 +160,7 @@ export function deleteTask(e, database) {
       );
       toDoList.removeItem(indexOfSelectedElement);
       target.parentElement.parentElement.remove();
+      storeData();
     }
   }
 
@@ -178,6 +182,7 @@ export function deleteTask(e, database) {
       );
       toDoList.removeItem(indexOfSelectedElement);
       target.parentElement.parentElement.remove();
+      storeData();
     }
   }
 }
