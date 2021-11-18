@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import isSameWeek from "date-fns/isSameWeek";
 import { toClass, todayHandler, upcomingHandler } from "./logic.js";
 import Project from "./ProjectManager.js";
-import { renderToDoList } from "./render.js";
+import { renderToDoList, deleteProjectPopup } from "./render.js";
 import { storeData } from "./Storage.js";
 import { toDoItem } from "./toDoList.js";
 
@@ -36,8 +36,16 @@ if (
 ) {
   toClass("Inbox", inboxDatabase, localStorage.getItem("inboxDatabase"));
   toClass("Today", todayDatabase, localStorage.getItem("todayDatabase"));
-  toClass("Upcoming",upcomingDatabase, localStorage.getItem("upcomingDatabase"));
-  toClass("Project",projectsDatabase, localStorage.getItem("projectsDatabase"));
+  toClass(
+    "Upcoming",
+    upcomingDatabase,
+    localStorage.getItem("upcomingDatabase")
+  );
+  toClass(
+    "Project",
+    projectsDatabase,
+    localStorage.getItem("projectsDatabase")
+  );
 }
 
 //inbox is selected by default
@@ -457,13 +465,13 @@ export function insertProjectDiv(name, id) {
   let button = document.createElement("button");
   li.appendChild(button);
   button.innerHTML = `
+  <i class="fas fa-times-circle fa-0.25x"></i>
     &#9642 ${name}
     `;
   button.classList.add("projects-children");
   button.setAttribute("id", `${id}`);
   button.addEventListener("click", displayProjectDiv);
   projectsDiv.querySelector("ul").appendChild(li);
-  displayProjectList();
 }
 
 //reset selections
@@ -484,12 +492,15 @@ function displayProjectDiv(e) {
   let idValue = e.target.getAttribute("id");
   let buttons = tabContainer.querySelectorAll("button");
 
-  buttons.forEach((button) => {
-    button.classList.remove("selected");
-  });
-  selectedDiv.classList.add("selected");
-
-  renderToDoList(projectsDatabase, idValue, "Project");
+  if (selectedDiv.nodeName == "I") {
+    deleteProjectPopup(projectsDatabase, e);
+  } else {
+    buttons.forEach((button) => {
+      button.classList.remove("selected");
+    });
+    selectedDiv.classList.add("selected");
+    renderToDoList(projectsDatabase, idValue, "Project");
+  }
 }
 
 function displayInboxDiv(e) {
@@ -554,4 +565,3 @@ function displayProjectList() {
 }
 
 export { projectsDatabase, inboxDatabase, todayDatabase, upcomingDatabase };
-

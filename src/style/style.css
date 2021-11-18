@@ -81,6 +81,9 @@ aside {
   padding: 0;
   margin: 0;
 }
+.fa-caret-right{
+  color: red;
+}
 .selected {
   background-color: rgb(209, 201, 201) !important;
 }
@@ -89,12 +92,14 @@ aside {
 .collapse {
   transition: 0.5s;
   position: absolute;
-  transform:translate(-50em);
+  transform: translate(-50em);
 }
 #projects-body {
   margin-top: 0.25em;
 }
 #projects-body ul {
+  display: flex;
+  flex-direction: column;
   padding: 0;
 }
 #projects-body li {
@@ -102,11 +107,27 @@ aside {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 }
-#projects-body .projects-children {
-  display: block;
+#projects-body button {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+#projects-body .projects-children{
   width: auto;
   text-align: center;
+  overflow: hidden;
+}
+#projects-body .projects-children i {
+  height: 0.1em;
+  width: 0.1em;
+  padding: 0.5em;
+  margin: 0.25em 0;
+  margin-right: 0.5em;
+  margin-bottom: 0.8em;
 }
 #projects-body .projects-children:hover {
   background-color: rgb(209, 201, 201);

@@ -15,6 +15,10 @@ class Project {
         this.projectsList.push(newProject);
     }
 
+    deleteProject(id) {
+        this.projectsList.splice(id,1);
+    }
+
     getProjects(){
         return this.projectsList;
     }

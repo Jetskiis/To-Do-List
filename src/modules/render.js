@@ -1,5 +1,5 @@
-import { addPageLock, editTask, removePageLock } from "./UI.js";
 import { storeData } from "./Storage.js";
+import { addPageLock, editTask, removePageLock } from "./UI.js";
 
 const mainContainer = document.querySelector(".main-container");
 const mainToDo = document.querySelector("#main-todo");
@@ -68,6 +68,45 @@ export function renderToDoList(projectList, id, type) {
 
   editButtonArr.forEach((element) => {
     element.addEventListener("click", editTask);
+  });
+}
+
+export function deleteProjectPopup(database,e) {
+  let selectedDiv = e.target.parentElement;
+  let idValue = selectedDiv.getAttribute("id");
+
+  let popup = document.createElement("div");
+  popup.innerHTML = `
+    <h3>Delete Project?</h3>
+    <span>     
+    <input type="submit" value="Yes">
+    <input type="submit" value="No">
+    </span>
+  `;
+  popup.classList.add("delete-task-popup");
+  mainContainer.appendChild(popup);
+  popup.style["z-index"] = "2";
+  addPageLock();
+
+  let inputs = document
+    .querySelector(".delete-task-popup")
+    .querySelectorAll("input[type=submit]");
+
+  inputs.forEach((element) => {
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (element.value == "Yes") {
+        database.deleteProject(idValue);
+        storeData();
+        selectedDiv.remove();
+        popup.remove();
+        window.location.reload();
+        removePageLock();
+      } else {
+        popup.remove();
+        removePageLock();
+      }
+    });
   });
 }
 
