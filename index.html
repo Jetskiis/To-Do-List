@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <script
+      src="https://kit.fontawesome.com/969a0e32f3.js"
+      crossorigin="anonymous"
+    ></script>
+  <script defer src="app.bundle.js"></script></head>
+  <body>
+    <header>
+      <div class="banner">
+        <h1>To-Do</h1>
+        <i class="fas fa-list-ul fa-2x"></i>
+      </div>
+    </header>
+    <main>
+      <aside>
+          <div id="tab-container">
+            <button id="inbox"><i class="fas fa-inbox"></i>Inbox</button>
+
+            <button id="today"><i class="fas fa-calendar-day"></i>Today</button>
+
+            <button id="upcoming">
+              <i class="fas fa-calendar-minus"></i>Upcoming
+            </button>
+
+            <div id="projects">
+              <div id="projects-header">
+                <button id="projects-slider"><i class="fas fa-caret-down fa-1x"></i></button>
+                <h2>Projects</h2>
+                <button id="add-project"> <i class="fas fa-plus"></i> </button>
+              </div>
+              <div id="projects-body">
+                <ul></ul>
+              </div>
+
+            </div>
+            
+          </div>
+        </div>
+      </aside>
+
+      <section class="main">
+        <div class="main-container">
+          <div id="main-todo">
+            <h2>Inbox</h2>
+            <button id="add-task"><i class="fas fa-plus"></i>Add Task</button>
+          </div>
+
+        </div>
+      </section>
+
+      
+    </main>
+
+  </body>
+</html>
