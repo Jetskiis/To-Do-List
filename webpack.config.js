@@ -12,6 +12,7 @@ module.exports = {
     filename: "app.bundle.js",
     hashFunction: "xxhash64",
     assetModuleFilename: "[name][ext]",
+    publicPath: "/To-Do-List/",
   },
   watchOptions: {
     aggregateTimeout: 600,

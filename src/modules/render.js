@@ -72,6 +72,7 @@ export function renderToDoList(projectList, id, type) {
 }
 
 export function deleteProjectPopup(database,e) {
+  alert("hi");
   let selectedDiv = e.target.parentElement;
   let idValue = selectedDiv.getAttribute("id");
 
